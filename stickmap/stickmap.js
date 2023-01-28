@@ -1249,7 +1249,22 @@ $(function () {
         repositionRegions(null, false);
         drawStickMap();
         $('#region-select').prop('selectedIndex', -1);
-    })
+    });
+
+    function getUrlRegions() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var regions = urlParams.get('regions');
+        try {
+            var regionsJSON = JSON.parse(regions);
+            return regionsJSON;
+        } catch (e) {
+            console.error("Error parsing regions parameter as JSON: " + e);
+            return false;
+        }
+    }
+
+    const urlRegions = getUrlRegions(); // Lets you add regions through a URL query param, could be useful later.
+    urlRegions && (regions = urlRegions.map((v,i) => {return(new Region(v))}));
 
     updateVerticalMode();
     drawStickMap();
